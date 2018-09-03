@@ -4,6 +4,8 @@ import { AuthService } from '../../services/auth.service';
 import { User } from '../../interfaces/user';
 import { environment } from '../../../environments/environment';
 
+declare let alertify: any;
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -28,25 +30,32 @@ export class HomeComponent implements OnInit {
     this.api_root_url = environment.api_root_url;
     this.currentUser = this.authService.getUser();
     this.list();
-    setInterval( () => { this.list(); } , 15000);
+    setInterval( () => { this.list(); } , 8000);
    }
 
   ngOnInit() {
   }
 
   list() {
-    this.alertSevice.list(this.currentUser.police_station_id).subscribe(alerts => {
-      this.alerts = alerts;
-      this.checkReads();
+    this.alertSevice.list(this.currentUser.police_station_id).subscribe( (alerts: Array<any>) => {
+      if (this.alerts.length === 0) {
+        this.alerts = alerts;
+      } else if (alerts.length > 0 && alerts[0].id !== this.alerts[0].id) {
+        this.alerts = alerts;
+        this.checkReads();
+      }
+    }, error => {
+      alertify.error('Ocorreu um erro ao se comunicar com o servidor.');
     });
   }
 
   updateStatus(alert) {
     this.audio.pause();
     this.alertSevice.updateAlert(alert.id, {email: this.currentUser.email}).subscribe( res => {
-      console.log(res);
+      alert.logs.push({alert_id: alert.id, type: 1, properties: {email: this.currentUser.email} });
+    }, error => {
+      alertify.error('Ocorreu um erro ao se comunicar com o servidor.');
     });
-    alert.logs.push({id: 1, alert_id: 28, type: 1, properties: {"email": "31bpm@ycloud.com.br"} });
 
   }
 
