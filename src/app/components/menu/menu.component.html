@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="py-2" href="/">
+    <img src="assets/images/icone.svg" alt="">
+  </a>
+  <span class="title">31 BPM</span>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarsExample05">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/"><i class="fa fa-bell" aria-hidden="true"></i> Alertas <span class="sr-only">(current)</span></a>
+      </li>
+      <!-- <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fa fa-map-marker" aria-hidden="true"></i> Meus Locais</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fa fa-users" aria-hidden="true"></i> Contatos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fa fa-info-circle" aria-hidden="true"></i> Dados Cadastrais</a>
+      </li> -->
+      <li class="nav-item">
+        <a class="nav-link" href="#" (click)="logout($event)"><i class="fa fa-sign-out" aria-hidden="true"></i> Sair</a>
+      </li>
+    </ul>
+  </div>
+</nav>

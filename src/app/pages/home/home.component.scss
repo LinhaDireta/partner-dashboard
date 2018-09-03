@@ -1,0 +1,18 @@
+.alert {
+
+    .card-body {
+        cursor: pointer;
+    }
+    .unread{
+        color: red;
+        animation: blinker 1s linear infinite;
+    }
+
+     @keyframes blinker {  
+        50% { opacity: 0; }
+    }
+
+    .active{
+        background-color: bisque;
+    }
+}

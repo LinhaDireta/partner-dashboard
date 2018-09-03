@@ -1,0 +1,31 @@
+<app-loader *ngIf="loading"></app-loader>
+<app-menu></app-menu>
+
+<div class="container">
+    <div class="row pt-2">
+      <h3>Alertas recentes</h3>
+      </div>
+    <div class="row pt-2">
+        <div class="col-xs-12 col-md-8">
+            <div class="card alert" *ngFor="let alert of alerts" (click)="updateStatus(alert)">
+                <div class="card-body">
+                  <span class="text-primary float-right">ID: {{alert.id}}</span>
+                  <h5 class="card-title" [class.unread]="alert.logs.length == 0">{{alert.created_at | date: "dd-MM-yyyy HH:mm"}}</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">{{alert.full_address}}</h6>
+                  <p class="card-text">{{alert.user.first_name}} {{alert.user.last_name}} - 
+                    {{alert.user.phone_number | slice:0:2}} 
+                    {{alert.user.phone_number | slice:2:4}}
+                    {{alert.user.phone_number | slice:4:9}}-
+                    {{alert.user.phone_number | slice:9:14}}
+                  </p>
+                  <audio [src]="api_root_url+'/'+alert.audio_path" controls></audio>
+                  <a href="https://www.google.com/maps/search/?api=1&query={{alert.location.coordinates[1]}},{{alert.location.coordinates[0]}}" target="_blank" class="card-link float-right pt-2">Ver no Google Maps</a>                  
+                  <h5 class="text-info">Mensagem enviada pelo usuário:</h5>
+                  <p>
+                    {{alert.text_message}}
+                  </p>
+                </div>
+              </div> 
+          </div>
+    </div>
+</div>

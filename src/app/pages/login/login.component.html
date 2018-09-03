@@ -1,0 +1,36 @@
+<div class="container">
+  <form class="form-signin" [formGroup]="formGroupLogin" (ngSubmit)="onSubmitLogin()" novalidate>
+    <div class="text-center mb-4">
+      <img class="mb-4" src="assets/images/logotipo.svg" alt="">
+    </div>
+
+    <div class="form-label-group">
+      <input type="email" class="form-control" placeholder="Email" required autofocus
+      [ngClass]="{ 'input-error': ( formGroupLogin.get('email').dirty && formGroupLogin.get('email').hasError('required') ) }"
+      name="email" id="email" formControlName="email"
+      autocomplete="Email"
+      >
+      <label for="email">Email</label>
+    </div>
+
+    <div class="form-label-group">
+      <input type="password" class="form-control" placeholder="Senha de acesso" required
+        [ngClass]="{ 'input-error': ( formGroupLogin.get('password').dirty && formGroupLogin.get('password').hasError('required') ) || ( formGroupLogin.get('password').dirty && formGroupLogin.get('password').hasError('minlength') ) || ( formGroupLogin.get('password').dirty && formGroupLogin.get('password').hasError('maxlength') ) }"
+        name="password" id="password" formControlName="password"
+        autocomplete="Senha de acesso"
+      >
+      <label for="password">Senha de acesso</label>
+    </div>
+
+    <div class="checkbox mb-3">
+      <label>
+          <input type="checkbox" name="accepted" id="accepted" formControlName="remember_me"> Lembrar senha
+      </label>
+    </div>
+    <button type="submit" class="btn btn-lg btn-primary btn-block" [disabled]="submitted">Entrar <img src="assets/images/loading.gif" alt="" *ngIf="submitted"></button>
+    <p class="mt-5 mb-3 text-muted text-center">&copy; 2017-2018</p>
+    <div class="alert alert-danger" *ngIf="errorCredentials">
+      <strong>Erro!</strong> Telefone ou senha inválidos.
+    </div>
+  </form>
+</div>
