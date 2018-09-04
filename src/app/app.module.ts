@@ -19,6 +19,7 @@ import { AuthService } from './services/auth.service';
 import { AplicationErrorHandle } from './app.error-handle';
 import { LoaderComponent } from './components/loader/loader.component';
 import { MenuComponent } from './components/menu/menu.component';
+import { SupportComponent } from './pages/support/support.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { MenuComponent } from './components/menu/menu.component';
     LoginComponent,
     LoaderComponent,
     MenuComponent,
+    SupportComponent,
   ],
   imports: [
     BrowserModule,

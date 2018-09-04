@@ -52,6 +52,9 @@ export class HomeComponent implements OnInit {
   updateStatus(alert) {
     this.audio.pause();
     this.alertSevice.updateAlert(alert.id, {email: this.currentUser.email}).subscribe( res => {
+      if (res.status === 401) {
+        location.reload();
+      }
       alert.logs.push({alert_id: alert.id, type: 1, properties: {email: this.currentUser.email} });
     }, error => {
       alertify.error('Ocorreu um erro ao se comunicar com o servidor.');

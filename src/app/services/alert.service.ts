@@ -14,6 +14,6 @@ export class AlertService {
   }
 
   updateAlert(alert_id, obj) {
-    return this.http.post(environment.api_url + `/alert/${alert_id}/set_read`, obj);
+    return this.http.post(environment.api_url + `/alert/${alert_id}/set_read`, obj, { observe: 'response' });
   }
 }
