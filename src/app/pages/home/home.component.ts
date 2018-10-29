@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
     this.api_root_url = environment.api_root_url;
     this.currentUser = this.authService.getUser();
     this.list();
-    setInterval( () => { this.list(); } , 8000);
+    setInterval( () => { this.list(); } , 10000);
    }
 
   ngOnInit() {
@@ -68,6 +68,27 @@ export class HomeComponent implements OnInit {
     if (this.audio.paused && unreads.length > 0) {
       this.audio.play();
     }
+  }
+
+  whatsappShare(alert) {
+
+    let url = 'https://wa.me/';
+
+    url += `?text=http://linhadireta.org/alerta/?q=${alert.uuid}`;
+          console.log(url);
+          // location.href = ``;
+          window.open(url, '_blank');
+
+    // const controller = this;
+    // alertify.prompt( 'Compartilhar', 'Informe o número de telefone com ddd', ''
+    //   , function(evt, value) { 
+    //       console.log(value);
+    //       console.log(alert.uuid);
+    //       // url += `55${value}?text=http://linhadireta.org/alerta/?q=${alert.uuid}`;
+          
+    //     }
+    //   , function() { })
+    //   .set('labels', {ok: 'Enviar', cancel: 'Cancelar'});
   }
 
 }
