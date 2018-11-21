@@ -37,16 +37,18 @@ export class HomeComponent implements OnInit {
   }
 
   list() {
-    this.alertSevice.list(this.currentUser.police_station_id).subscribe( (alerts: Array<any>) => {
-      if (this.alerts.length === 0) {
-        this.alerts = alerts;
-      } else if (alerts.length > 0 && alerts[0].id !== this.alerts[0].id) {
-        this.alerts = alerts;
-        this.checkReads();
-      }
-    }, error => {
-      alertify.error('Ocorreu um erro ao se comunicar com o servidor.');
-    });
+    if (this.authService.check()) {
+      this.alertSevice.list(this.currentUser.police_station_id).subscribe( (alerts: Array<any>) => {
+        if (this.alerts.length === 0) {
+          this.alerts = alerts;
+        } else if (alerts.length > 0 && alerts[0].id !== this.alerts[0].id) {
+          this.alerts = alerts;
+          this.checkReads();
+        }
+      }, error => {
+        alertify.error('Ocorreu um erro ao se comunicar com o servidor.');
+      });
+    }
   }
 
   updateStatus(alert) {

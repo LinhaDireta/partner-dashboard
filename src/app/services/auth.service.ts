@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/do';
 import { User } from '../interfaces/user';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,37 +15,74 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) { }
 
   check(): boolean {
-    return localStorage.getItem('user') ? true : false;
+    return localStorage.getItem('currentUser') ? true : false;
   }
 
-  login(credentials: {email: string, password: string}): Observable<boolean> {
-    return this.http.post<any>(environment.api_url + '/police-station/login', credentials)
-    .do(data => {
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', btoa(JSON.stringify(data.user)));
-    });
+  login(credentials: {email: string, password: string}): Observable<User> {
+    return this.http.post<User>(environment.api_url + '/police-station/login', credentials)
+      .pipe(
+        map(data => {
+          if (data) {
+            const user = this.formatedUser(data);
+            localStorage.setItem('currentUser', btoa(JSON.stringify(user)));
+            return <User>user;
+          } else {
+            return null;
+          }
+
+        })
+      );
   }
 
   logout(): void {
-    this.http.get(environment.api_url + '/auth/logout').subscribe((response) => {
-      localStorage.clear();
-      // this.router.navigate(['login']);
-      location.href = '/';
-    });
+    localStorage.removeItem('currentUser');
+    this.router.navigate(['login']);
   }
 
   getUser(): User {
-    return localStorage.getItem('user') ? JSON.parse(atob(localStorage.getItem('user'))) : null;
+    return localStorage.getItem('currentUser') ? JSON.parse(atob(localStorage.getItem('currentUser'))) : null;
   }
 
-  setUser(): Promise<boolean> {
-    return this.http.get<any>(environment.api_url + '/auth/me').toPromise()
-      .then(data => {
-        if (data.user) {
-          localStorage.setItem('user', btoa(JSON.stringify(data.user)));
-          return true;
-        }
-        return false;
-      });
+  refreshToken() : Observable<User> {
+    let currentUser = this.getUser();
+    let token = currentUser.token;
+ 
+    return this.http.post<User>(`${environment.api_url}/auth/refresh`, { 'token': token })
+      .pipe(
+        map(data => {
+ 
+          if (data && data.token) {
+            const user = this.formatedUser(data);
+            localStorage.setItem('currentUser', btoa(JSON.stringify(user)));
+            return <User>user;
+          } else {
+            return null;
+          }
+ 
+      }));
   }
+
+
+  getAuthToken() : string {
+    let currentUser = this.getUser();
+ 
+    if(currentUser != null) {
+      return currentUser.token;
+    }
+ 
+    return '';
+  }
+
+  formatedUser(data) {
+    return {
+      token: data.token,
+      id: data.user.id,
+      first_name: data.user.first_name,
+      last_name: data.user.last_name,
+      phone_number: data.user.phone_number,
+      email: data.user.email,
+      police_station_id: data.user.police_station_id
+    }
+  }
+
 }

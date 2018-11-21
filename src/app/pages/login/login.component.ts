@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
 
   submitted = false;
   errorCredentials = false;
+  returnUrl: string;
 
   email = new FormControl('', [
     Validators.required,
@@ -34,21 +35,20 @@ export class LoginComponent implements OnInit {
   constructor(
     private builder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'home';
   }
 
   onSubmitLogin() {
-    console.log("onSubmitLogin");
-
     if ( this.formGroupLogin.valid ) {
       this.submitted = true;
       this.authService.login(this.formGroupLogin.value).subscribe(
-        (data) => {
-          console.log('data:', data);
-          this.router.navigate(['home']);
+        (user) => {
+          this.router.navigate([this.returnUrl]);
         },
         (errorResponse: HttpErrorResponse) => {
           if (errorResponse.status === 401) {

@@ -4,9 +4,13 @@
 
 export const environment = {
   production: false,
-  // api_url: 'http://api-final.linhadiretapm.com/api',
-  api_url: 'http://api.linhadireta.dev.br/api',
-  api_root_url: 'http://api.linhadireta.dev.br'
+  /* PRODUCTION */
+  api_url: 'https://api-final.linhadiretapm.com/api',
+  api_root_url: 'https://api-final.linhadiretapm.com'
+
+  /* VIRTUAL HOST LOCAL */
+  // api_url: 'http://api.linhadireta.dev.br/api',
+  // api_root_url: 'http://api.linhadireta.dev.br'
 };
 
 /*
